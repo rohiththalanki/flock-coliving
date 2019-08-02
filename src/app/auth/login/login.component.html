@@ -1,0 +1,47 @@
+<div style="padding: 30px;">
+  <img
+    style="    width: 80%;margin: auto;padding: 60px 40px;
+    display: block;"
+    src="../../../assets/images/flock-logo.png"
+  />
+  <form [formGroup]="loginForm" class="step-container">
+    <div class="form-group">
+      <label for="mobile" class="label">Mobile</label>
+      <input
+        type="number"
+        nbInput
+        fullWidth
+        id="mobile"
+        placeholder="Enter mobile Number"
+        class="form-control"
+        formControlName="mobile"
+        [ngClass]="{
+          'form-control-danger':
+            loginForm.get('mobile').invalid &&
+            (loginForm.get('mobile').touched || loginForm.get('mobile').dirty)
+        }"
+      />
+    </div>
+    <div class="form-group">
+      <label for="password" class="label">Password</label>
+      <input
+        type="text"
+        nbInput
+        fullWidth
+        id="password"
+        placeholder="Enter Password"
+        class="form-control"
+        formControlName="password"
+        [ngClass]="{
+          'form-control-danger':
+            loginForm.get('password').invalid &&
+            (loginForm.get('password').touched ||
+              loginForm.get('password').dirty)
+        }"
+      />
+    </div>
+    <button nbButton (click)="login()" [disabled]="loginForm.invalid">
+      Login
+    </button>
+  </form>
+</div>

@@ -1,0 +1,16 @@
+<nb-card size="large">
+  <nb-card-header>
+    Food Orders
+  </nb-card-header>
+  <nb-card-body>
+    <div class="progress-info" *ngFor="let item of progressInfoData">
+      <div class="title">{{ item.title }}</div>
+      <div class="h3">{{ item.activeProgress | ngxNumberWithCommas }}</div>
+      <nb-progress-bar [value]="item.activeProgress"></nb-progress-bar>
+      <div class="caption description">
+        <bdi>{{ item.description }}</bdi>
+        <bdi style="float: right;">{{ item.value }}</bdi>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

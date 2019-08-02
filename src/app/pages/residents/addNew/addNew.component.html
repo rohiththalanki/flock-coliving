@@ -1,0 +1,288 @@
+<div class="steppers-container row">
+  <div class="col-md-12 col-lg-8 offset-lg-2 col-xxxl-8">
+    <nb-card>
+      <nb-card-header>
+        New Residents/ Guests
+      </nb-card-header>
+      <nb-card-body class="stepper_card_body">
+        <nb-stepper #stepper>
+          <nb-step [stepControl]="firstForm" label="Details">
+
+            <form
+              [formGroup]="mobileForm"
+              class="step-container">
+              <div class="form-group">
+                <label for="mobile" class="label">Mobile</label>
+                <input
+                  type="number"
+                  nbInput
+                  fullWidth
+                  id="mobile"
+                  placeholder="mobile Number"
+                  class="form-control"
+                  formControlName="mobile"
+                  (keyup)="getUserIfExists()"
+                  [ngClass]="{
+                    'form-control-danger':
+                      mobileForm.get('mobile').invalid &&
+                      (mobileForm.get('mobile').touched ||
+                        mobileForm.get('mobile').dirty)
+                  }"
+                />
+                <label class="green label" *ngIf="booking.userFound && checkRequestSent">This number already exists! Try another one</label>
+              </div>
+            </form>
+
+            <div  *ngIf="!booking.userFound && checkRequestSent">
+              <form
+                [formGroup]="firstForm"
+                class="step-container"
+              >
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="gender" class="label">gender</label>
+                      <nb-select fullWidth
+                                 id="gender"
+                                 formControlName="isMale"
+                                 placeholder="Gender"
+                      >
+                        <nb-option value="true">Male</nb-option>
+                        <nb-option value="false">Female</nb-option>
+                      </nb-select>
+                    </div>
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="form-group">
+                      <label for="full_name" class="label">Full Name</label>
+                      <input
+                        type="text"
+                        id="full_name"
+                        nbInput
+                        fullWidth
+                        placeholder="full name"
+                        class="form-control"
+                        formControlName="fullName"
+                        [ngClass]="{
+                        'form-control-danger':
+                          firstForm.get('fullName').invalid &&
+                          (firstForm.get('fullName').touched ||
+                            firstForm.get('fullName').dirty)
+                      }"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="InputEmail" class="label">Email address</label>
+                  <input
+                    type="email"
+                    nbInput
+                    fullWidth
+                    id="InputEmail"
+                    placeholder="Email"
+                    class="form-control"
+                    formControlName="email"
+                    [ngClass]="{
+                    'form-control-danger':
+                      firstForm.get('email').invalid &&
+                      (firstForm.get('email').touched ||
+                        firstForm.get('email').dirty)
+                  }"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="birth_date" class="label">Start Date</label>
+                  <input
+                    nbInput
+                    fullWidth
+                    id="birth_date"
+                    placeholder="Date Of Birth"
+                    [nbDatepicker]="picker_birth"
+                    class="form-control"
+                    formControlName="birthDate"
+                    [ngClass]="{
+                        'form-control-danger':
+                          firstForm.get('birthDate').invalid &&
+                          (firstForm.get('birthDate').touched ||
+                            firstForm.get('birthDate').dirty)
+                      }"
+                  />
+                  <nb-datepicker #picker_birth></nb-datepicker>
+                </div>
+                <div class="row">
+                  <div class="col-sm-4">
+                      <div class="form-group">
+                        <label for="type_proof" class="label">Type Of Proof</label>
+                        <nb-select fullWidth
+                                   id="type_proof"
+                                   formControlName="proofType"
+                                   placeholder="Proof"
+                        >
+                          <nb-option value="aadhar">Aadhaar Card</nb-option>
+                          <nb-option value="driving">Driving Lisence</nb-option>
+                          <nb-option value="pan">Pan Card</nb-option>
+                          <nb-option value="employee">Employee/Student Id</nb-option>
+                        </nb-select>
+                      </div>
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="form-group">
+                      <label for="proof" class="label">Proof</label>
+                      <input
+                        type="file"
+                        nbInput
+                        fullWidth
+                        id="proof"
+                        class="form-control"
+                        formControlName="idProof"
+                        (change)="addImages($event)"
+                        multiple="multiple"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <button nbButton nbStepperNext (click)="saveUserDetails()" [disabled]="firstForm.invalid || !imagesUploaded">
+                  AddUser and Continue
+                </button>
+              </form>
+            </div>
+
+          </nb-step>
+
+
+
+
+
+          <nb-step [stepControl]="secondForm" label="Room Details">
+            <form
+              [formGroup]="secondForm"
+              class="step-container"
+            >
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="start_date" class="label">Start Date</label>
+                    <input
+                      nbInput
+                      fullWidth
+                      id="start_date"
+                      placeholder="Start Date"
+                      [nbDatepicker]="picker_start"
+                      class="form-control"
+                      formControlName="startDate"
+                      [ngClass]="{
+                        'form-control-danger':
+                          secondForm.get('startDate').invalid &&
+                          (secondForm.get('startDate').touched ||
+                            secondForm.get('startDate').dirty)
+                      }"
+                    />
+                    <nb-datepicker #picker_start [min]="min"></nb-datepicker>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="end_date" class="label">End Date</label>
+                    <input
+                      nbInput
+                      id="end_date"
+                      fullWidth
+                      placeholder="End Date"
+                      [nbDatepicker]="picker_end"
+                      class="form-control"
+                      formControlName="endDate"
+                      [ngClass]="{
+                        'form-control-danger':
+                          secondForm.get('endDate').invalid &&
+                          (secondForm.get('endDate').touched ||
+                            secondForm.get('endDate').dirty)
+                      }"
+                    />
+                    <nb-datepicker
+                      #picker_end
+                      [min]="min"
+                      [max]="max"
+                    ></nb-datepicker>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="room_type" class="label">Type of Room</label>
+                <nb-select fullWidth
+                           id="room_type"
+                           formControlName="roomType"
+                           placeholder="Select Type of Room">
+                  <nb-option value="unicode">Uninode - Private</nb-option>
+                  <nb-option value="dual">Dual Nook - 2 Sharing</nb-option>
+                  <nb-option value="triple">Triple Oasis - 3 Sharing </nb-option>
+                  <nb-option value="noMan">No Mans Island</nb-option>
+                  <nb-option value="guest">Guest Room</nb-option>
+                </nb-select>
+              </div>
+              <button nbButton *ngIf="!showAvailableRooms" (click)="getAvailability()">Get Available Rooms</button>
+              <div class="form-group" *ngIf="showAvailableRooms">
+                <label for="room_no" class="label">Select Room</label>
+                <nb-radio-group id="room_no">
+                  <nb-radio [value]="101">
+                    101
+                  </nb-radio>
+                  <nb-radio [value]="102">
+                    102
+                  </nb-radio>
+                  <nb-radio [value]="103">
+                    103
+                  </nb-radio>
+                  <nb-radio [value]="104">
+                    104
+                  </nb-radio>
+                  <nb-radio [value]="105">
+                    105
+                  </nb-radio>
+                  <nb-radio [value]="106">
+                    106
+                  </nb-radio>
+                  <nb-radio [value]="107">
+                    107
+                  </nb-radio>
+                </nb-radio-group>
+              </div>
+              <button nbButton nbStepperPrevious>prev</button>
+              <button nbButton nbStepperNext (click)="onSecondSubmit()">
+                next
+              </button>
+            </form>
+          </nb-step>
+
+
+
+
+
+          <nb-step [stepControl]="thirdForm" label="Payment">
+            <form
+              [formGroup]="thirdForm"
+              (ngSubmit)="onThirdSubmit()"
+              class="step-container"
+            >
+              <div class="input-group">
+                <textarea rows=3 nbInput fullWidth shape="round"  placeholder="Text Area"  class="form-control"
+                          formControlName="thirdCtrl"></textarea>
+              </div>
+              <button nbButton nbStepperPrevious>prev</button>
+              <button nbButton nbStepperNext>Confirm</button>
+            </form>
+          </nb-step>
+          <nb-step [stepControl]="thirdForm" [hidden]="true" label="Third step">
+            <div class="step-container">
+              <h3>Wizard completed!</h3>
+              <button nbButton (click)="stepper.reset()">Add New</button>
+              <button nbButton (click)="sendCredentials()">
+                Send Credentials
+              </button>
+            </div>
+          </nb-step>
+        </nb-stepper>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
